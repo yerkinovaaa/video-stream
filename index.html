@@ -60,65 +60,65 @@
             const ctx = canvas.getContext('2d');
 
             startBtn.addEventListener('click', e => {
-            startBtn.disabled = true;
-            stopBtn.disabled = false;
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
 
-            unblurBtn.disabled = false;
-            blurBtn.disabled = false;
+                unblurBtn.disabled = false;
+                blurBtn.disabled = false;
 
-            startVideoStream();
+                startVideoStream();
             });
 
             stopBtn.addEventListener('click', e => {
-            startBtn.disabled = false;
-            stopBtn.disabled = true;
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
 
-            unblurBtn.disabled = true;
-            blurBtn.disabled = true;
+                unblurBtn.disabled = true;
+                blurBtn.disabled = true;
 
-            unblurBtn.hidden = true;
-            blurBtn.hidden = false;
+                unblurBtn.hidden = true;
+                blurBtn.hidden = false;
 
-            videoElement.hidden = false;
-            canvas.hidden = true;
+                videoElement.hidden = false;
+                canvas.hidden = true;
 
-            stopVideoStream();
+                stopVideoStream();
             });
 
             blurBtn.addEventListener('click', e => {
-            blurBtn.hidden = true;
-            unblurBtn.hidden = false;
-
-            videoElement.hidden = true;
-            canvas.hidden = false;
-
-            loadBodyPix();
+                blurBtn.hidden = true;
+                unblurBtn.hidden = false;
+    
+                videoElement.hidden = true;
+                canvas.hidden = false;
+    
+                loadBodyPix();
             });
 
             unblurBtn.addEventListener('click', e => {
-            blurBtn.hidden = false;
-            unblurBtn.hidden = true;
-
-            videoElement.hidden = false;
-            canvas.hidden = true;
+                blurBtn.hidden = false;
+                unblurBtn.hidden = true;
+    
+                videoElement.hidden = false;
+                canvas.hidden = true;
             });
 
             videoElement.onplaying = () => {
-            canvas.height = videoElement.videoHeight;
-            canvas.width = videoElement.videoWidth;
+                canvas.height = videoElement.videoHeight;
+                canvas.width = videoElement.videoWidth;
             };
 
             function startVideoStream() {
             navigator.mediaDevices.getUserMedia({video: true, audio: false})
                 .then(stream => {
-                videoElement.srcObject = stream;
-                videoElement.play();
+                    videoElement.srcObject = stream;
+                    videoElement.play();
                 })
                 .catch(err => {
-                startBtn.disabled = false;
-                blurBtn.disabled = true;
-                stopBtn.disabled = true;
-                alert(`Following error occured: ${err}`);
+                    startBtn.disabled = false;
+                    blurBtn.disabled = true;
+                    stopBtn.disabled = true;
+                    alert(`Following error occured: ${err}`);
                 });
             }
 
@@ -126,14 +126,14 @@
             const stream = videoElement.srcObject;
 
             stream.getTracks().forEach(track => track.stop());
-            videoElement.srcObject = null;
+                videoElement.srcObject = null;
             }
 
             function loadBodyPix() {
-            options = {
-                multiplier: 0.75,
-                stride: 32,
-                quantBytes: 4
+                options = {
+                    multiplier: 0.75,
+                    stride: 32,
+                    quantBytes: 4
             }
             bodyPix.load(options)
                 .then(net => perform(net))
@@ -141,18 +141,16 @@
             }
 
             async function perform(net) {
-
-            while (startBtn.disabled && blurBtn.hidden) {
-                const segmentation = await net.segmentPerson(video);
-
-                const backgroundBlurAmount = 6;
-                const edgeBlurAmount = 2;
-                const flipHorizontal = true;
-
-                bodyPix.drawBokehEffect(
-                canvas, videoElement, segmentation, backgroundBlurAmount,
-                edgeBlurAmount, flipHorizontal);
-                }
+                while (startBtn.disabled && blurBtn.hidden) {
+                    const segmentation = await net.segmentPerson(video);
+                    const backgroundBlurAmount = 6;
+                    const edgeBlurAmount = 2;
+                    const flipHorizontal = true;
+    
+                    bodyPix.drawBokehEffect(
+                    canvas, videoElement, segmentation, backgroundBlurAmount,
+                    edgeBlurAmount, flipHorizontal);
+                    }
             }
         </script>
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
